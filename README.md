@@ -105,3 +105,26 @@ El selector de escala anterior fue retirado: se eligieron 32 px.
 Probar reposo, carrera a ambos lados, salto parado/en movimiento, caída
 desde una plataforma, aterrizaje y salto inmediato, reinicio en el aire
 y ambos ataques. Mostrar colisión permite inspeccionar la caja temporal.
+
+## Presentación y pantalla completa
+La vista normal usa el espacio disponible de la ventana, sin límite de
+960 px. El escenario y el HUD se ajustan juntos a 16:9 sin deformación.
+La resolución interna sigue siendo 320 × 180; ampliar la presentación
+no cambia el tamaño del mundo ni el área visible de la cámara.
+
+Botón Pantalla completa en la esquina superior derecha del juego.
+Esc o el botón de salida vuelven a la vista normal. La solicitud nativa
+se realiza al pulsar el botón, como exige el navegador. Si no está
+disponible o se rechaza, se usa una vista ampliada dentro de la ventana.
+Las bandas oscuras conservan la proporción en pantallas de otro formato.
+El HUD y el botón de salida permanecen dentro del contenedor ampliado.
+
+Implementación: src/ui/display.ts, index.html y src/style.css.
+ResizeObserver ajusta el área del juego al cambiar la ventana o el modo.
+Phaser conserva su escala FIT y el pixel art utiliza image-rendering:
+pixelated. No se aumenta el coste de la resolución interna del juego.
+
+Prueba manual: entrar/salir varias veces, salir con Esc, redimensionar
+la ventana y comprobar HUD, salto y controles después del cambio.
+Comprobado en navegador integrado: vista ampliada, entrada a pantalla
+completa y alternativa cuando el navegador la rechaza, salida con Esc.

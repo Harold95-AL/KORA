@@ -3,22 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KORA — Primer prototipo</title>
+    <title>KORA</title>
   </head>
   <body>
     <main>
-      <h1>KORA</h1>
-      <p>Un primer paso en un planeta desconocido.</p>
-      <div class="test-controls" aria-label="Prueba de colisión"><label><input type="checkbox" id="show-collision" /> Mostrar colisión</label></div>
-      <div class="game-frame">
-        <div id="game" aria-label="Prototipo de plataformas KORA"></div>
-        <div class="game-hud">
-          <h2>KORA <span>/ Prueba de movimiento y combate</span></h2>
-          <p id="player-health" role="status">Salud: 3 / 3</p>
-          <p id="course-status" role="status">Avanza hacia la derecha · R: reiniciar</p>
+      <header class="page-header">
+        <div class="brand"><h1>KORA</h1><p>Un primer paso en un planeta desconocido.</p></div>
+        <label class="collision-control"><input type="checkbox" id="show-collision" /> Mostrar colisión</label>
+      </header>
+      <div class="game-frame" id="game-frame">
+        <div class="game-surface" id="game-surface">
+          <div id="game" aria-label="Prototipo de plataformas KORA"></div>
+          <div class="game-hud">
+            <h2>KORA</h2>
+            <p id="player-health" role="status">Salud: 3 / 3</p>
+            <p id="course-status" role="status">Avanza hacia la derecha · R: reiniciar</p>
+          </div>
         </div>
+        <button id="fullscreen-button" class="fullscreen-button" type="button" aria-pressed="false">Pantalla completa</button>
       </div>
-      <p class="controls">Mover: A / D o flechas · Saltar: espacio o flecha arriba · J: golpe · K: disparo · R: reiniciar</p>
+      <footer>
+        <p class="controls">Mover: A / D o flechas · Saltar: espacio o ↑ · J: golpe · K: disparo · R: reiniciar</p>
+        <p id="display-message" role="status"></p>
+      </footer>
     </main>
     <script type="module" src="/src/main.ts"></script>
   </body>

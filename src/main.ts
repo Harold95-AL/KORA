@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import './style.css';
 import { WORLD, COMBAT } from './config/game';
 import { GameScene } from './scenes/GameScene';
+import { setupDisplay } from './ui/display';
+
+setupDisplay();
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
