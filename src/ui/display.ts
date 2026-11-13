@@ -1,3 +1,5 @@
+import { WORLD } from '../config/game';
+
 /** Ajusta el lienzo y el HUD juntos, conservando la proporción del juego. */
 export function setupDisplay(): void {
   const frame = document.querySelector<HTMLDivElement>('#game-frame');
@@ -8,10 +10,11 @@ export function setupDisplay(): void {
     throw new Error('Faltan elementos de presentación del juego.');
   }
 
+  const aspect = WORLD.width / WORLD.height;
   const fit = (): void => {
-    const width = Math.floor(Math.min(frame.clientWidth, frame.clientHeight * 16 / 9));
+    const width = Math.floor(Math.min(frame.clientWidth, frame.clientHeight * aspect));
     surface.style.width = width + 'px';
-    surface.style.height = width * 9 / 16 + 'px';
+    surface.style.height = width / aspect + 'px';
   };
   const observer = new ResizeObserver(fit);
   observer.observe(frame);

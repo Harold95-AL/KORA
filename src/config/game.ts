@@ -1,5 +1,7 @@
 // Un salto de unos 44 px con un recorrido completo de aproximadamente 0,5 s.
-export const WORLD = { width: 320, height: 180, gravity: 1400 } as const;
+export const WORLD = { width: 480, height: 270, gravity: 1400 } as const;
+// Más espacio por encima del recorrido sin desplazar sus plataformas.
+export const CAMERA = { top: -64, deadzoneWidth: 105 } as const;
 export const PLAYER = { speed: 90, jumpSpeed: 350 } as const;
 
 export const COMBAT = {

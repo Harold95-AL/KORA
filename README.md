@@ -29,7 +29,7 @@ paquete de Phaser; no impide compilar. No hay filtros ni iluminación costosa.
 - R: reiniciar el recorrido y restaurar enemigos y salud.
 
 ## Prototipo actual
-Resolución interna 320 × 180, recorrido de 960 px, plataformas sólidas,
+Resolución interna 480 × 270, recorrido de 960 px, plataformas sólidas,
 tres huecos, cámara lateral y bandera final. Texto HTML a resolución de
 pantalla para conservar la legibilidad.
 
@@ -109,7 +109,7 @@ y ambos ataques. Mostrar colisión permite inspeccionar la caja temporal.
 ## Presentación y pantalla completa
 La vista normal usa el espacio disponible de la ventana, sin límite de
 960 px. El escenario y el HUD se ajustan juntos a 16:9 sin deformación.
-La resolución interna sigue siendo 320 × 180; ampliar la presentación
+La resolución interna sigue siendo 480 × 270; ampliar la presentación
 no cambia el tamaño del mundo ni el área visible de la cámara.
 
 Botón Pantalla completa en la esquina superior derecha del juego.
@@ -128,3 +128,19 @@ Prueba manual: entrar/salir varias veces, salir con Esc, redimensionar
 la ventana y comprobar HUD, salto y controles después del cambio.
 Comprobado en navegador integrado: vista ampliada, entrada a pantalla
 completa y alternativa cuando el navegador la rechaza, salida con Esc.
+
+## Encuadre más alejado
+Resolución interna actual: 480 × 270, relación 16:9.
+Los sprites conservan su escala de 32 px: el personaje ocupa aproximadamente
+un tercio menos de altura de pantalla frente al encuadre anterior de 320 × 180.
+Se ve un 50 % más de mundo horizontal y verticalmente.
+
+Cámara: límite superior -64 y zona horizontal de seguimiento de 105 px.
+El suelo queda en la parte inferior del encuadre; las plataformas conservan
+sus coordenadas y distancias. El límite físico superior se amplió para
+acompañar al encuadre. El fondo provisional cubre el área adicional.
+El salto, velocidad, ataques, colisiones y resolución de las hojas de sprites
+no se modifican. La interfaz HTML sigue a resolución de pantalla.
+
+La presentación mantiene pantalla completa y bandas según la proporción.
+Se comprobó build, encuadre y salto en navegador.

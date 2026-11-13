@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { WORLD } from '../config/game';
+import { WORLD, CAMERA } from '../config/game';
 import { PLAYER_SHEETS, PLAYER_ANIMATIONS, PLAYER_FRAME } from '../config/playerAnimations';
 import { PROTOTYPE_LEVEL as LEVEL } from '../data/prototypeLevel';
 import { Player } from '../entities/Player';
@@ -31,13 +31,15 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     const camera = this.cameras.main;
     camera.setBackgroundColor('#081522');
-    camera.setBounds(0, 0, LEVEL.width, WORLD.height);
-    this.physics.world.setBounds(0, 0, LEVEL.width, LEVEL.height);
+    camera.setBounds(0, CAMERA.top, LEVEL.width, WORLD.height);
+    this.physics.world.setBounds(0, CAMERA.top, LEVEL.width, LEVEL.height - CAMERA.top);
     // El borde inferior queda abierto para detectar caídas en los huecos.
     this.physics.world.setBoundsCollision(true, true, true, false);
 
     const scenery = this.add.graphics();
     for (let x = 20; x < LEVEL.width; x += 90) {
+      scenery.fillStyle(0x0d2231);
+      scenery.fillTriangle(x - 35, 156, x + 35, -30 + (x % 55), x + 100, 156);
       scenery.fillStyle(0x102c3d);
       scenery.fillTriangle(x, 156, x + 25, 62 + (x % 35), x + 50, 156);
       scenery.fillStyle(0x185364);
@@ -91,7 +93,7 @@ export class GameScene extends Phaser.Scene {
     ];
     this.combat = new CombatSystem(this, this.player, this.enemies, platforms);
     camera.startFollow(this.player, true);
-    camera.setDeadzone(70, WORLD.height);
+    camera.setDeadzone(CAMERA.deadzoneWidth, WORLD.height);
 
     const keyboard = this.input.keyboard;
     if (!keyboard) throw new Error('KORA requiere entrada de teclado.');
@@ -127,7 +129,7 @@ export class GameScene extends Phaser.Scene {
       this.enemies.forEach((enemy) => enemy.resetEnemy());
       this.combat.reset();
       this.cameras.main.stopFollow();
-      this.cameras.main.setScroll(0, 0);
+      this.cameras.main.setScroll(0, CAMERA.top);
       this.cameras.main.startFollow(this.player, true);
     }
 
