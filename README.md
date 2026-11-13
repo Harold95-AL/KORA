@@ -144,3 +144,18 @@ no se modifican. La interfaz HTML sigue a resolución de pantalla.
 
 La presentación mantiene pantalla completa y bandas según la proporción.
 Se comprobó build, encuadre y salto en navegador.
+
+## Inicio de partida y prólogo
+Al abrir el juego aparece el menú principal.
+Solo Jugar está habilitado; Continuar, Ajustes y Créditos son opciones
+visuales deshabilitadas. No existe guardado de partida todavía.
+
+Jugar inicia las diez viñetas del prólogo aportadas por el usuario:
+seis segundos por imagen, duración automática aproximada de un minuto.
+Espacio avanza una viñeta y Omitir prólogo entra directamente al recorrido.
+El HUD y las físicas del recorrido solo se activan al terminar el prólogo.
+
+La presentación usa fundidos sencillos, proporción completa de cada viñeta
+y texto a resolución de pantalla. No hay audio aún.
+La salida actual es el recorrido de prueba, hasta construir la sección 1.1.
+Recargar vuelve al menú. Detalles y fuentes: docs/storyboards/prologue-v1.md.

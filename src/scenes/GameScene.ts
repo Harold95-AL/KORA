@@ -29,6 +29,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.game.events.emit('screen-change', 'playing');
+    this.game.events.emit('course-status', false);
+    this.completed = false;
     const camera = this.cameras.main;
     camera.setBackgroundColor('#081522');
     camera.setBounds(0, CAMERA.top, LEVEL.width, WORLD.height);

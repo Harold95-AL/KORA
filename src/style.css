@@ -79,3 +79,71 @@ canvas { display: block; image-rendering: pixelated; }
   .game-hud p { font-size: 11px; }
   .controls { font-size: 11px; }
 }
+
+[hidden] { display: none !important; }
+body[data-screen="menu"] main,
+body[data-screen="prologue"] main { padding: 0; gap: 0; grid-template-rows: minmax(0, 1fr); }
+body[data-screen="menu"] .page-header,
+body[data-screen="menu"] main > footer,
+body[data-screen="prologue"] .page-header,
+body[data-screen="prologue"] main > footer { display: none; }
+body[data-screen="menu"] .game-frame,
+body[data-screen="prologue"] .game-frame { outline: none; }
+.fullscreen-button { z-index: 20; }
+
+.main-menu { position: absolute; inset: 0; z-index: 5; overflow: hidden; background: #07121f; }
+.menu-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% center; image-rendering: pixelated; }
+.menu-shade { position: absolute; inset: 0; background: linear-gradient(90deg, #030d17fa 0%, #061524f2 28%, #071726bd 48%, #07152438 76%, #020a134d 100%), linear-gradient(0deg, #020b16 0%, transparent 26%, transparent 80%, #020b1670 100%); }
+.menu-content { position: relative; z-index: 1; height: 100%; width: 62%; padding: 8% 7%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.menu-eyebrow { display: flex; align-items: center; gap: 10px; font-size: clamp(9px, .9vw, 12px); letter-spacing: .18em; color: #8cd6d8; }
+.menu-eyebrow span { width: 6px; height: 6px; background: #75f3e3; box-shadow: 0 0 12px #4ee6e666; }
+#menu-title { margin: 8px 0 4px; font-family: monospace; font-size: clamp(48px, 8vw, 120px); font-weight: 900; line-height: 1.1; letter-spacing: .16em; color: #e2ffff; text-shadow: 0 3px 0 #215663; }
+.menu-description { color: #b1c9d5; font-size: clamp(12px, 1.1vw, 16px); line-height: 1.7; }
+.menu-actions { width: min(100%, 310px); display: grid; gap: 8px; margin-top: clamp(14px, 3vh, 32px); }
+.menu-actions button { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; border: 1px solid #46647466; border-left: 2px solid #466474; border-radius: 2px; padding: 12px 16px; background: #071624a8; color: #b8c7d1; font: inherit; font-size: clamp(12px, 1.1vw, 16px); text-align: left; }
+.menu-actions button > span:first-child { text-transform: uppercase; letter-spacing: .14em; }
+.menu-actions small { font-size: 10px; color: #849aa8; letter-spacing: .02em; }
+.menu-actions button:disabled { cursor: default; color: #8394a2; background: #06121b80; border-color: #34485577; }
+.menu-actions .menu-play { cursor: pointer; color: #dffff6; background: linear-gradient(90deg, #164b55e8, #11343de8); border-color: #5fe0d8; border-left: 3px solid #9affeb; }
+.menu-actions .menu-play:hover { background: #23626b; }
+.menu-play:focus-visible { outline: 2px solid #c2fff5; outline-offset: 4px; }
+.menu-coordinate { position: absolute; right: 7%; bottom: 15%; display: grid; justify-items: end; gap: 10px; color: #d2ffff; font-size: clamp(9px, .9vw, 12px); letter-spacing: .16em; text-shadow: 0 2px 4px #02070c; }
+.menu-coordinate i { width: 70px; height: 2px; background: #4ee6e6; }
+.menu-coordinate span:last-child { font-size: 9px; color: #a7ced7; }
+.menu-footer { position: absolute; bottom: 4%; left: 7%; right: 7%; display: flex; justify-content: space-between; gap: 16px; color: #7798aa; font-size: clamp(8px, .7vw, 10px); letter-spacing: .12em; }
+.prologue { position: absolute; inset: 0; z-index: 6; background: #02070c; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 16px; padding: 24px 28px 20px; }
+.cinematic-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-right: 180px; }
+.cinematic-eyebrow { font-size: 10px; letter-spacing: .24em; color: #65c8cc; }
+.cinematic-header h2 { margin: 4px 0 0; font-size: clamp(16px, 2vw, 26px); font-weight: 500; color: #d8eeef; }
+#prologue-counter { font-size: 12px; font-variant-numeric: tabular-nums; color: #8caab8; letter-spacing: .1em; }
+.cinematic-stage { min-height: 0; min-width: 0; display: grid; place-items: center; overflow: hidden; }
+#prologue-image { width: 100%; height: 100%; min-height: 0; object-fit: contain; image-rendering: pixelated; }
+.cinematic-track { height: 2px; background: #16313b; overflow: hidden; }
+.cinematic-track span { display: block; height: 100%; background: #4ee6e6; transform: scaleX(0); transform-origin: left; }
+.cinematic-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; font-size: 12px; color: #7798aa; }
+.cinematic-footer button { border: 1px solid #355661; border-radius: 3px; padding: 8px 12px; background: #0b1c27; color: #c6e7ed; font: inherit; cursor: pointer; }
+.cinematic-footer button:hover { border-color: #4ee6e6; }
+.cinematic-footer button:focus-visible { outline: 2px solid #80f5e4; outline-offset: 3px; }
+@media (max-width: 650px) {
+  .menu-content { width: 75%; padding: 6% 7%; }
+  .menu-eyebrow { font-size: 8px; letter-spacing: .08em; }
+  #menu-title { font-size: 48px; }
+  .menu-description { font-size: 11px; line-height: 1.4; }
+  .menu-actions { gap: 5px; margin-top: 12px; max-width: 240px; }
+  .menu-actions button { padding: 8px 12px; font-size: 11px; }
+  .menu-actions small { font-size: 8px; }
+  .menu-coordinate { display: none; }
+  .menu-footer { font-size: 7px; bottom: 3%; }
+  .menu-footer span:last-child { display: none; }
+  .prologue { gap: 8px; padding: 12px; }
+  .cinematic-header { padding-right: 135px; gap: 8px; }
+  .cinematic-header h2 { font-size: 15px; }
+  .cinematic-eyebrow, #prologue-counter { font-size: 9px; }
+  .cinematic-footer { padding-top: 8px; font-size: 10px; }
+}
+@media (max-height: 500px) and (min-width: 651px) {
+  .menu-content { padding-top: 3%; padding-bottom: 5%; }
+  #menu-title { font-size: 52px; }
+  .menu-actions { gap: 4px; margin-top: 12px; }
+  .menu-actions button { padding: 7px 12px; }
+}

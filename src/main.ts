@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import './style.css';
 import { WORLD, COMBAT } from './config/game';
 import { GameScene } from './scenes/GameScene';
+import { MenuScene } from './scenes/MenuScene';
+import { PrologueScene } from './scenes/PrologueScene';
+import { setupFrontEnd } from './ui/frontEnd';
 import { setupDisplay } from './ui/display';
 
 setupDisplay();
@@ -23,10 +26,12 @@ const game = new Phaser.Game({
     default: 'arcade',
     arcade: { gravity: { x: 0, y: WORLD.gravity }, debug: false },
   },
-  scene: [GameScene],
+  scene: [MenuScene, PrologueScene, GameScene],
 });
 
-// La interfaz usa texto del navegador, independiente del lienzo de 320 × 180.
+setupFrontEnd(game);
+
+// La interfaz usa texto del navegador, independiente del lienzo del juego.
 const status = document.querySelector<HTMLParagraphElement>('#course-status');
 if (!status) throw new Error('No se encontró el estado del recorrido.');
 

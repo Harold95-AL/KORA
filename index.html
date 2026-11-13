@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KORA</title>
   </head>
-  <body>
+  <body data-screen="menu">
     <main>
       <header class="page-header">
         <div class="brand"><h1>KORA</h1><p>Un primer paso en un planeta desconocido.</p></div>
@@ -14,7 +14,35 @@
       <div class="game-frame" id="game-frame">
         <div class="game-surface" id="game-surface">
           <div id="game" aria-label="Prototipo de plataformas KORA"></div>
-          <div class="game-hud">
+          <section id="main-menu" class="main-menu" aria-labelledby="menu-title">
+            <img class="menu-art" src="%BASE_URL%assets/prologue/panel-09.png" alt="" />
+            <div class="menu-shade"></div>
+            <div class="menu-content">
+              <p class="menu-eyebrow"><span></span> UNA SEÑAL EN LO DESCONOCIDO</p>
+              <h2 id="menu-title">KORA</h2>
+              <p class="menu-description">Entre cristales y energía,<br />comienza el viaje hacia el núcleo.</p>
+              <nav class="menu-actions" aria-label="Menú principal">
+                <button id="play-button" class="menu-play" type="button"><span>Jugar</span><span aria-hidden="true">→</span></button>
+                <button type="button" disabled><span>Continuar</span><small>Próximamente</small></button>
+                <button type="button" disabled><span>Ajustes</span><small>Próximamente</small></button>
+                <button type="button" disabled><span>Créditos</span><small>Próximamente</small></button>
+              </nav>
+            </div>
+            <div class="menu-coordinate" aria-hidden="true"><span>01 / LA SEÑAL</span><i></i><span>EL VIAJE COMIENZA AQUÍ</span></div>
+            <div class="menu-footer"><span>ACCIÓN · EXPLORACIÓN · CIENCIA FICCIÓN</span><span>VERSIÓN EN DESARROLLO</span></div>
+          </section>
+          <section id="prologue" class="prologue" aria-label="Prólogo de KORA" hidden>
+            <header class="cinematic-header">
+              <div><span class="cinematic-eyebrow">PRÓLOGO</span><h2 id="prologue-chapter">La señal</h2></div>
+              <span id="prologue-counter">01 / 10</span>
+            </header>
+            <div class="cinematic-stage"><img id="prologue-image" alt="" /></div>
+            <div>
+              <div class="cinematic-track" aria-hidden="true"><span id="prologue-progress"></span></div>
+              <div class="cinematic-footer"><span>Espacio: siguiente viñeta</span><button id="skip-prologue" type="button">Omitir prólogo →</button></div>
+            </div>
+          </section>
+          <div class="game-hud" hidden>
             <h2>KORA</h2>
             <p id="player-health" role="status">Salud: 3 / 3</p>
             <p id="course-status" role="status">Avanza hacia la derecha · R: reiniciar</p>
