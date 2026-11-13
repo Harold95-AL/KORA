@@ -1,3 +1,6 @@
+Actualización: reposo, salto, caída provisional y aterrizaje ya están integrados.
+Ver protagonist-motion-v1.md. El texto siguiente registra el hito de carrera.
+
 # Carrera del protagonista — recurso V1
 
 Altura elegida por el usuario: 32 píxeles. Ya no hay selector de escalas.

@@ -86,18 +86,22 @@ Los avances se guardan en commits locales. Publicar solo con autorización:
 .gitignore excluye node_modules, dist, .env, claves y temporales.
 No introducir secretos en archivos versionados.
 
-## Protagonista: carrera a 32 px
-Altura elegida: 32 px. Se retiró el selector de 32/40.
-Hoja: public/assets/sprites/protagonist-run-v1-32.png, 512 × 32.
-Ocho cuadros de 64 × 32, con escala y alineación comunes, a 12 FPS.
-La carrera solo se reproduce al moverse en el suelo. Al detenerse o
-saltar se usa por ahora el primer cuadro fijo de la misma hoja.
-Idle animado y poses propias de salto/caída siguen pendientes.
+## Protagonista: animaciones a 32 px
+Reposo cíclico, carrera, ascenso, caída provisional y aterrizaje.
+Todas las hojas usan cuadros de 64 × 32 y transparencia limpia.
+Los cuadros de caída provienen de la segunda mitad de la hoja de salto;
+la postura extendida definitiva sigue pendiente.
 
-Se conserva la caja provisional de 10 × 16 para no modificar la
-jugabilidad durante la integración gráfica. La cola queda fuera.
-Mostrar colisión permite comprobarla. No es la caja corporal definitiva.
+Las animaciones se eligen por apoyo y velocidad del personaje.
+El aterrizaje dura 150 ms y se interrumpe al correr o volver a saltar,
+sin bloquear controles ni modificar la física.
+Se conserva la caja temporal de 10 × 16, con la cola fuera.
 
-Prueba: correr en ambas direcciones, soltar las teclas, saltar y aterrizar,
-usar R y comprobar que no aparecen recortes ni saltos de escala entre cuadros.
-Documentación del recurso: docs/art/protagonist-run-v1.md.
+Configuración: src/config/playerAnimations.ts.
+Recursos: public/assets/sprites/protagonist-{idle,run,jump,land}-v1-32.png.
+Fuentes y detalles: docs/art/protagonist-motion-v1.md.
+El selector de escala anterior fue retirado: se eligieron 32 px.
+
+Probar reposo, carrera a ambos lados, salto parado/en movimiento, caída
+desde una plataforma, aterrizaje y salto inmediato, reinicio en el aire
+y ambos ataques. Mostrar colisión permite inspeccionar la caja temporal.

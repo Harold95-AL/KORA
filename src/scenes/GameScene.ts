@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { WORLD } from '../config/game';
+import { PLAYER_SHEETS, PLAYER_ANIMATIONS, PLAYER_FRAME } from '../config/playerAnimations';
 import { PROTOTYPE_LEVEL as LEVEL } from '../data/prototypeLevel';
 import { Player } from '../entities/Player';
 import { Enemy } from '../entities/Enemy';
@@ -20,9 +21,11 @@ export class GameScene extends Phaser.Scene {
 
   preload(): void {
     const base = import.meta.env.BASE_URL;
-    this.load.spritesheet('player-run', base + 'assets/sprites/protagonist-run-v1-32.png', {
-      frameWidth: 64, frameHeight: 32,
-    });
+    for (const sheet of PLAYER_SHEETS) {
+      this.load.spritesheet(sheet.key, base + 'assets/sprites/' + sheet.file, {
+        frameWidth: PLAYER_FRAME.width, frameHeight: PLAYER_FRAME.height,
+      });
+    }
   }
 
   create(): void {
@@ -67,12 +70,15 @@ export class GameScene extends Phaser.Scene {
       );
     }
 
-    if (!this.anims.exists('player-run')) {
+    for (const animation of PLAYER_ANIMATIONS) {
+      if (this.anims.exists(animation.key)) continue;
       this.anims.create({
-        key: 'player-run',
-        frames: this.anims.generateFrameNumbers('player-run', { start: 0, end: 7 }),
-        frameRate: 12,
-        repeat: -1,
+        key: animation.key,
+        frames: this.anims.generateFrameNumbers(animation.texture, {
+          start: animation.start, end: animation.end,
+        }),
+        frameRate: animation.frameRate,
+        repeat: animation.repeat,
       });
     }
     this.player = new Player(this, LEVEL.spawn.x, LEVEL.spawn.y);
