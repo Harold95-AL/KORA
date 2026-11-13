@@ -20,8 +20,9 @@ export class GameScene extends Phaser.Scene {
 
   preload(): void {
     const base = import.meta.env.BASE_URL;
-    this.load.image('player-32', base + 'assets/sprites/protagonist-v1-32.png');
-    this.load.image('player-40', base + 'assets/sprites/protagonist-v1-40.png');
+    this.load.spritesheet('player-run', base + 'assets/sprites/protagonist-run-v1-32.png', {
+      frameWidth: 64, frameHeight: 32,
+    });
   }
 
   create(): void {
@@ -66,6 +67,14 @@ export class GameScene extends Phaser.Scene {
       );
     }
 
+    if (!this.anims.exists('player-run')) {
+      this.anims.create({
+        key: 'player-run',
+        frames: this.anims.generateFrameNumbers('player-run', { start: 0, end: 7 }),
+        frameRate: 12,
+        repeat: -1,
+      });
+    }
     this.player = new Player(this, LEVEL.spawn.x, LEVEL.spawn.y);
     this.physics.add.collider(this.player, platforms);
     this.enemies = [
@@ -83,20 +92,11 @@ export class GameScene extends Phaser.Scene {
     this.restartKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
     this.collisionOutline = this.add.graphics().setDepth(20);
 
-    const changeScale = (height: number): void => {
-      if (height !== 32 && height !== 40) return;
-      this.player.setVisualHeight(height);
-      this.game.events.emit('player-scale-changed', height);
-    };
     const changeCollision = (visible: boolean): void => {
       this.showCollision = visible;
     };
-    this.game.events.on('player-scale', changeScale);
     this.game.events.on('player-collision', changeCollision);
-    keyboard.on('keydown-ONE', () => changeScale(32));
-    keyboard.on('keydown-TWO', () => changeScale(40));
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.game.events.off('player-scale', changeScale);
       this.game.events.off('player-collision', changeCollision);
     });
 

@@ -1,3 +1,7 @@
+# Estado actual
+Se eligió 32 px y se integró la carrera. Ver docs/art/protagonist-run-v1.md.
+La comparación descrita abajo es un registro de la prueba anterior.
+
 # Protagonista de KORA — Concepto V1.0
 
 ## Identidad aprobada

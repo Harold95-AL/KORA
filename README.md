@@ -86,12 +86,18 @@ Los avances se guardan en commits locales. Publicar solo con autorización:
 .gitignore excluye node_modules, dist, .env, claves y temporales.
 No introducir secretos en archivos versionados.
 
-## Protagonista: comparación visual V1.0
-Diseño conceptual aprobado y criterios en docs/protagonist-v1.md.
-Sobre el juego hay botones para alternar 32 y 40 px de altura; también
-se pueden usar las teclas 1 y 2. Mostrar colisión revela la caja magenta,
-sin incluir la cola. Se conserva la caja temporal de 10 × 16 del
-prototipo para comparar solo la apariencia; no es la hitbox final.
-Al recargar se selecciona 32 px. No hay animaciones todavía.
-Comprobar ojos, pañuelo, silueta, giro, apoyo de los pies y proporción
-respecto a plataformas. R y los ataques siguen disponibles.
+## Protagonista: carrera a 32 px
+Altura elegida: 32 px. Se retiró el selector de 32/40.
+Hoja: public/assets/sprites/protagonist-run-v1-32.png, 512 × 32.
+Ocho cuadros de 64 × 32, con escala y alineación comunes, a 12 FPS.
+La carrera solo se reproduce al moverse en el suelo. Al detenerse o
+saltar se usa por ahora el primer cuadro fijo de la misma hoja.
+Idle animado y poses propias de salto/caída siguen pendientes.
+
+Se conserva la caja provisional de 10 × 16 para no modificar la
+jugabilidad durante la integración gráfica. La cola queda fuera.
+Mostrar colisión permite comprobarla. No es la caja corporal definitiva.
+
+Prueba: correr en ambas direcciones, soltar las teclas, saltar y aterrizar,
+usar R y comprobar que no aparecen recortes ni saltos de escala entre cuadros.
+Documentación del recurso: docs/art/protagonist-run-v1.md.

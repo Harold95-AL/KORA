@@ -9,16 +9,11 @@
     <main>
       <h1>KORA</h1>
       <p>Un primer paso en un planeta desconocido.</p>
-      <div class="scale-controls" aria-label="Comparación de escala del protagonista">
-        <span>Altura provisional:</span>
-        <button type="button" data-player-size="32" aria-pressed="true">32 px · tecla 1</button>
-        <button type="button" data-player-size="40" aria-pressed="false">40 px · tecla 2</button>
-        <label><input type="checkbox" id="show-collision" /> Mostrar colisión</label>
-      </div>
+      <div class="test-controls" aria-label="Prueba de colisión"><label><input type="checkbox" id="show-collision" /> Mostrar colisión</label></div>
       <div class="game-frame">
         <div id="game" aria-label="Prototipo de plataformas KORA"></div>
         <div class="game-hud">
-          <h2>KORA <span>/ Escala del protagonista: <span id="player-scale">32 px</span></span></h2>
+          <h2>KORA <span>/ Prueba de movimiento y combate</span></h2>
           <p id="player-health" role="status">Salud: 3 / 3</p>
           <p id="course-status" role="status">Avanza hacia la derecha · R: reiniciar</p>
         </div>

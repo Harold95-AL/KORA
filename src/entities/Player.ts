@@ -11,11 +11,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly jumpKey: Phaser.Input.Keyboard.Key;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'player-32');
+    super(scene, x, y, 'player-run', 0);
     scene.add.existing(this);
     scene.physics.add.existing(this);
     this.setCollideWorldBounds(true);
-    this.setVisualHeight(32);
+    this.setOrigin(0.5, 0.75);
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    body.setSize(10, 16, false);
+    body.setOffset(27, 16);
 
     const keyboard = scene.input.keyboard;
     if (!keyboard) throw new Error('KORA requiere entrada de teclado.');
@@ -40,17 +43,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if ((upPressed || spacePressed) && body.blocked.down) {
       this.setVelocityY(-PLAYER.jumpSpeed);
     }
-  }
 
-  setVisualHeight(height: 32 | 40): void {
-    this.setTexture('player-' + height);
-    // Marcos simétricos: el cuerpo permanece centrado al mirar a ambos lados.
-    // La cola es decorativa. Ambas escalas comparten la física ya validada.
-    this.setOrigin(0.5, 1 - 8 / height);
-    const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(10, 16, false);
-    body.setOffset(height - 5, height - 16);
-    body.updateFromGameObject();
+    if (body.blocked.down && body.velocity.y === 0 && body.velocity.x !== 0) {
+      this.play('player-run', true);
+    } else {
+      this.anims.stop();
+      this.setFrame(0);
+    }
   }
 
   takeDamage(time: number): boolean {
@@ -64,6 +63,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   respawn(x: number, y: number): void {
     (this.body as Phaser.Physics.Arcade.Body).reset(x, y);
     this.setVelocity(0, 0);
+    this.anims.stop();
+    this.setFrame(0);
     this.health = COMBAT.playerHealth;
     this.invulnerableUntil = this.scene.time.now + COMBAT.invulnerability;
     this.setAlpha(1);
