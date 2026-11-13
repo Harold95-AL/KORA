@@ -38,3 +38,25 @@ if (!health) throw new Error('No se encontró el indicador de salud.');
 game.events.on('player-health', (value: number) => {
   health.textContent = 'Salud: ' + value + ' / ' + COMBAT.playerHealth;
 });
+
+const scaleLabel = document.querySelector<HTMLSpanElement>('#player-scale');
+const scaleButtons = document.querySelectorAll<HTMLButtonElement>('[data-player-size]');
+const collisionToggle = document.querySelector<HTMLInputElement>('#show-collision');
+if (!scaleLabel || !collisionToggle) throw new Error('Faltan los controles de escala.');
+
+scaleButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    game.events.emit('player-scale', Number(button.dataset.playerSize));
+    button.blur();
+  });
+});
+collisionToggle.addEventListener('change', () => {
+  game.events.emit('player-collision', collisionToggle.checked);
+  collisionToggle.blur();
+});
+game.events.on('player-scale-changed', (height: number) => {
+  scaleLabel.textContent = height + ' px';
+  scaleButtons.forEach((button) => {
+    button.setAttribute('aria-pressed', String(Number(button.dataset.playerSize) === height));
+  });
+});

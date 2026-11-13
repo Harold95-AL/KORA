@@ -11,9 +11,17 @@ export class GameScene extends Phaser.Scene {
   private completed = false;
   private enemies: Enemy[] = [];
   private combat!: CombatSystem;
+  private collisionOutline!: Phaser.GameObjects.Graphics;
+  private showCollision = false;
 
   constructor() {
     super('GameScene');
+  }
+
+  preload(): void {
+    const base = import.meta.env.BASE_URL;
+    this.load.image('player-32', base + 'assets/sprites/protagonist-v1-32.png');
+    this.load.image('player-40', base + 'assets/sprites/protagonist-v1-40.png');
   }
 
   create(): void {
@@ -30,16 +38,6 @@ export class GameScene extends Phaser.Scene {
       scenery.fillTriangle(x, 156, x + 25, 62 + (x % 35), x + 50, 156);
       scenery.fillStyle(0x185364);
       scenery.fillTriangle(x + 58, 156, x + 65, 130, x + 72, 156);
-    }
-
-    if (!this.textures.exists('player')) {
-      const texture = this.add.graphics();
-      texture.fillStyle(0x80f5e4);
-      texture.fillRect(0, 0, 10, 16);
-      texture.fillStyle(0x14384c);
-      texture.fillRect(5, 3, 5, 4);
-      texture.generateTexture('player', 10, 16);
-      texture.destroy();
     }
 
     for (const [key, width, height, color] of [
@@ -83,6 +81,24 @@ export class GameScene extends Phaser.Scene {
     const keyboard = this.input.keyboard;
     if (!keyboard) throw new Error('KORA requiere entrada de teclado.');
     this.restartKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    this.collisionOutline = this.add.graphics().setDepth(20);
+
+    const changeScale = (height: number): void => {
+      if (height !== 32 && height !== 40) return;
+      this.player.setVisualHeight(height);
+      this.game.events.emit('player-scale-changed', height);
+    };
+    const changeCollision = (visible: boolean): void => {
+      this.showCollision = visible;
+    };
+    this.game.events.on('player-scale', changeScale);
+    this.game.events.on('player-collision', changeCollision);
+    keyboard.on('keydown-ONE', () => changeScale(32));
+    keyboard.on('keydown-TWO', () => changeScale(40));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.game.events.off('player-scale', changeScale);
+      this.game.events.off('player-collision', changeCollision);
+    });
 
     this.add.rectangle(928, 132, 2, 48, 0x80f5e4);
     this.add.triangle(936, 114, 0, 0, 16, 6, 0, 12, 0x80f5e4);
@@ -107,6 +123,13 @@ export class GameScene extends Phaser.Scene {
       this.cameras.main.stopFollow();
       this.cameras.main.setScroll(0, 0);
       this.cameras.main.startFollow(this.player, true);
+    }
+
+    this.collisionOutline.clear();
+    if (this.showCollision) {
+      const body = this.player.body as Phaser.Physics.Arcade.Body;
+      this.collisionOutline.lineStyle(1, 0xff4fbd, 1);
+      this.collisionOutline.strokeRect(body.x, body.y, body.width, body.height);
     }
 
     const completed = this.player.x >= 910;

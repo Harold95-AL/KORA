@@ -85,3 +85,13 @@ Los avances se guardan en commits locales. Publicar solo con autorización:
 
 .gitignore excluye node_modules, dist, .env, claves y temporales.
 No introducir secretos en archivos versionados.
+
+## Protagonista: comparación visual V1.0
+Diseño conceptual aprobado y criterios en docs/protagonist-v1.md.
+Sobre el juego hay botones para alternar 32 y 40 px de altura; también
+se pueden usar las teclas 1 y 2. Mostrar colisión revela la caja magenta,
+sin incluir la cola. Se conserva la caja temporal de 10 × 16 del
+prototipo para comparar solo la apariencia; no es la hitbox final.
+Al recargar se selecciona 32 px. No hay animaciones todavía.
+Comprobar ojos, pañuelo, silueta, giro, apoyo de los pies y proporción
+respecto a plataformas. R y los ataques siguen disponibles.
