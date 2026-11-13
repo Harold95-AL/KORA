@@ -2,11 +2,15 @@ import Phaser from 'phaser';
 import { WORLD } from '../config/game';
 import { PROTOTYPE_LEVEL as LEVEL } from '../data/prototypeLevel';
 import { Player } from '../entities/Player';
+import { Enemy } from '../entities/Enemy';
+import { CombatSystem } from '../systems/CombatSystem';
 
 export class GameScene extends Phaser.Scene {
   private player!: Player;
   private restartKey!: Phaser.Input.Keyboard.Key;
-  private status!: Phaser.GameObjects.Text;
+  private completed = false;
+  private enemies: Enemy[] = [];
+  private combat!: CombatSystem;
 
   constructor() {
     super('GameScene');
@@ -38,6 +42,18 @@ export class GameScene extends Phaser.Scene {
       texture.destroy();
     }
 
+    for (const [key, width, height, color] of [
+      ['enemy', 14, 14, 0xffffff],
+      ['shot', 6, 3, 0x80ceff],
+    ] as const) {
+      if (this.textures.exists(key)) continue;
+      const texture = this.add.graphics();
+      texture.fillStyle(color);
+      texture.fillRect(0, 0, width, height);
+      texture.generateTexture(key, width, height);
+      texture.destroy();
+    }
+
     const platforms = this.physics.add.staticGroup();
     for (const platform of LEVEL.platforms) {
       const surface = this.add.rectangle(
@@ -54,6 +70,13 @@ export class GameScene extends Phaser.Scene {
 
     this.player = new Player(this, LEVEL.spawn.x, LEVEL.spawn.y);
     this.physics.add.collider(this.player, platforms);
+    this.enemies = [
+      new Enemy(this, 130, 198),
+      new Enemy(this, 290, 435),
+      new Enemy(this, 540, 684),
+      new Enemy(this, 800, 910),
+    ];
+    this.combat = new CombatSystem(this, this.player, this.enemies, platforms);
     camera.startFollow(this.player, true);
     camera.setDeadzone(70, WORLD.height);
 
@@ -61,32 +84,35 @@ export class GameScene extends Phaser.Scene {
     if (!keyboard) throw new Error('KORA requiere entrada de teclado.');
     this.restartKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
-    this.add.text(12, 10, 'KORA / RECORRIDO DE PRUEBA', {
-      fontFamily: 'monospace', fontSize: '8px', color: '#80f5e4',
-    }).setScrollFactor(0).setDepth(10);
-    this.status = this.add.text(12, 23, 'Avanza hacia la derecha', {
-      fontFamily: 'monospace', fontSize: '8px', color: '#c6e7ed',
-    }).setScrollFactor(0).setDepth(10);
-
     this.add.rectangle(928, 132, 2, 48, 0x80f5e4);
     this.add.triangle(936, 114, 0, 0, 16, 6, 0, 12, 0x80f5e4);
   }
 
-  update(): void {
-    this.player.update();
+  update(time: number): void {
+    this.player.update(time);
 
-    if (this.player.y > LEVEL.height || Phaser.Input.Keyboard.JustDown(this.restartKey)) {
-      this.player.setPosition(LEVEL.spawn.x, LEVEL.spawn.y);
-      this.player.setVelocity(0, 0);
+    this.enemies.forEach((enemy) => enemy.update(time));
+    this.combat.update(time);
+    for (const enemy of this.enemies) {
+      if (enemy.active && this.physics.overlap(this.player, enemy)) {
+        this.player.takeDamage(time);
+      }
+    }
+
+    const restartPressed = Phaser.Input.Keyboard.JustDown(this.restartKey);
+    if (this.player.health <= 0 || this.player.y > LEVEL.height || restartPressed) {
+      this.player.respawn(LEVEL.spawn.x, LEVEL.spawn.y);
+      this.enemies.forEach((enemy) => enemy.resetEnemy());
+      this.combat.reset();
       this.cameras.main.stopFollow();
       this.cameras.main.setScroll(0, 0);
       this.cameras.main.startFollow(this.player, true);
     }
 
-    this.status.setText(
-      this.player.x >= 910
-        ? 'Recorrido completado / R: repetir'
-        : 'Avanza hacia la derecha / R: reiniciar',
-    );
+    const completed = this.player.x >= 910;
+    if (completed !== this.completed) {
+      this.completed = completed;
+      this.game.events.emit('course-status', completed);
+    }
   }
 }

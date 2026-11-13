@@ -1,7 +1,10 @@
 import Phaser from 'phaser';
-import { PLAYER } from '../config/game';
+import { PLAYER, COMBAT } from '../config/game';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
+  facing = 1;
+  health: number = COMBAT.playerHealth;
+  private invulnerableUntil = 0;
   private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private readonly leftKey: Phaser.Input.Keyboard.Key;
   private readonly rightKey: Phaser.Input.Keyboard.Key;
@@ -21,9 +24,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.jumpKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
-  update(): void {
+  update(time: number): void {
+    this.setAlpha(time < this.invulnerableUntil && Math.floor(time / 70) % 2 === 0 ? 0.35 : 1);
     const left = this.cursors.left.isDown || this.leftKey.isDown;
     const right = this.cursors.right.isDown || this.rightKey.isDown;
+    if (left !== right) this.facing = right ? 1 : -1;
+    this.setFlipX(this.facing < 0);
     this.setVelocityX((Number(right) - Number(left)) * PLAYER.speed);
 
     // Consumir ambas pulsaciones evita un salto pendiente al aterrizar.
@@ -33,5 +39,22 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if ((upPressed || spacePressed) && body.blocked.down) {
       this.setVelocityY(-PLAYER.jumpSpeed);
     }
+  }
+
+  takeDamage(time: number): boolean {
+    if (time < this.invulnerableUntil || this.health <= 0) return false;
+    this.health -= 1;
+    this.invulnerableUntil = time + COMBAT.invulnerability;
+    this.scene.game.events.emit('player-health', this.health);
+    return true;
+  }
+
+  respawn(x: number, y: number): void {
+    (this.body as Phaser.Physics.Arcade.Body).reset(x, y);
+    this.setVelocity(0, 0);
+    this.health = COMBAT.playerHealth;
+    this.invulnerableUntil = this.scene.time.now + COMBAT.invulnerability;
+    this.setAlpha(1);
+    this.scene.game.events.emit('player-health', this.health);
   }
 }

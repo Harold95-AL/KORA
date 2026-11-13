@@ -1,65 +1,87 @@
 # KORA
 
-Prototipo universitario de acción y plataformas 2D para navegador.
-Stack confirmado: Phaser 4, TypeScript y Vite.
+Videojuego universitario de acción y plataformas 2D para navegador.
+Un planeta de cristales y energía, con una aventura corta como objetivo.
+Desarrollo incremental: actualmente hay un recorrido y combate de prueba.
 
-## Ejecutar
-Requiere Node.js compatible con Vite (entorno inicial: Node 24).
+## Tecnologías
+Phaser 4.2.1, TypeScript 7.0.2 (strict), Vite 8.3.8.
+Entorno inicial: Node.js 24 y npm. package-lock.json fija las dependencias.
 
+## Instalación y ejecución
     npm install
     npm run dev
 
-Abrir la URL local que indique Vite.
+Abrir la dirección local que indique Vite.
 
-## Compilar
+## Distribución
     npm run build
     npm run preview
 
+El build comprueba TypeScript y genera dist/. Vite advierte del tamaño del
+paquete de Phaser; no impide compilar. No hay filtros ni iluminación costosa.
+
 ## Controles
-- A / D o flechas izquierda / derecha: caminar.
-- Espacio o flecha arriba: saltar al estar en el suelo.
-- Soltar y volver a pulsar para otro salto.
-- R: volver al inicio del recorrido. Caer en un hueco también devuelve al inicio.
+- A / D o flechas: caminar.
+- Espacio o flecha arriba: saltar. Soltar y pulsar para volver a saltar.
+- J: golpe de energía en la dirección del personaje.
+- K: disparo horizontal en la dirección del personaje.
+- R: reiniciar el recorrido y restaurar enemigos y salud.
 
-## Organización
-- src/main.ts: arranque de Phaser, escala y física.
-- src/config/game.ts: resolución y parámetros de movimiento.
-- src/scenes/GameScene.ts: escenario provisional y colisiones.
-- src/entities/Player.ts: entrada y movimiento del personaje.
-- src/data/prototypeLevel.ts: posiciones de plataformas, límites y aparición.
+## Prototipo actual
+Resolución interna 320 × 180, recorrido de 960 px, plataformas sólidas,
+tres huecos, cámara lateral y bandera final. Texto HTML a resolución de
+pantalla para conservar la legibilidad.
 
-Resolución inicial provisional: 320 × 180; pixel art nítido y escalado FIT.
-Arcade Physics; figuras simples sin iluminación, filtros ni recursos finales.
-Salud, vidas, combate, narrativa y checkpoints se implementarán por etapas.
-El sistema ofensivo y los detalles narrativos pendientes siguen sin decidirse.
+Los dos ataques son opciones complementarias, sin jerarquía de arma
+principal o secundaria. Valores provisionales:
+- Golpe: zona cercana de 26 px, 2 de daño, puede alcanzar varios enemigos
+  una vez por golpe. Duración 110 ms y recuperación de 320 ms.
+- Disparo: 1 de daño, velocidad 260 px/s, duración máxima 700 ms
+  (aproximadamente 182 px), recuperación de 320 ms. Desaparece al tocar una
+  plataforma o al primer enemigo. Los disparos no atraviesan enemigos.
+- Los ataques tienen recuperaciones independientes, sin munición limitada.
+- Cuatro enemigos patrullan, con 3 de salud, barra y destello al recibir daño.
+- El contacto enemigo quita 1 de salud al jugador, con 900 ms de
+  invulnerabilidad y parpadeo. Salud inicial: 3.
+- Al caer o perder la salud se restaura la prueba completa desde el inicio.
+  Esta regla de prototipo no define todavía el sistema final de vidas
+  ni checkpoints. Alcanzar la bandera permite seguir probando.
+
+## Archivos
+- src/main.ts: arranque de Phaser y conexión del HUD mediante eventos.
+- src/config/game.ts: parámetros de movimiento, resolución y combate.
+- src/data/prototypeLevel.ts: posiciones del recorrido y aparición.
+- src/scenes/GameScene.ts: construcción del mundo, enemigos y reinicio.
+- src/entities/Player.ts: movimiento, orientación, salud e invulnerabilidad.
+- src/entities/Enemy.ts: patrulla, salud y respuesta al daño.
+- src/systems/CombatSystem.ts: golpe, proyectiles, impactos y limpieza.
+- index.html / src/style.css: interfaz nítida y controles.
 
 ## Comprobación manual
-Caminar en ambas direcciones, saltar y aterrizar; comprobar que no se
-atraviesa el suelo ni los límites. Mantener salto no debe repetirlo.
-Redimensionar la ventana y comprobar que se conserva la proporción.
+1. Caminar, saltar, aterrizar y cruzar los huecos sin atravesar el suelo.
+2. Golpear cerca con J: dos golpes derrotan a un enemigo; lejos no daña.
+3. Disparar con K: tres impactos derrotan a un enemigo; comprobar ambas
+   direcciones, impactos en plataformas y expiración de disparos.
+4. Combinar J y K. Mantener pulsada una tecla no repite el ataque.
+5. Tocar un enemigo: comprobar daño, parpadeo y protección breve.
+6. Perder toda la salud, caer o pulsar R: regresar al inicio con salud 3,
+   enemigos restaurados y sin proyectiles ni golpes activos.
+7. Llegar a la bandera y reiniciar: el mensaje debe actualizarse.
+8. Redimensionar la ventana: texto legible y proporción del juego conservada.
 
-## Siguiente hito
-Evaluar el recorrido y refinar los controles; después acordar un ataque básico.
+## Decisiones y siguiente hito
+Confirmados: Phaser 4 y combate cercano y a distancia con utilidad propia.
+Los números, reglas finales de muerte y diseño de enemigos son provisionales.
+Siguiente paso: evaluar alcance, ritmo y claridad de los dos ataques antes
+de incorporar más contenido. Vidas, checkpoints y narrativa vendrán después.
 
-## Objetivo y alcance
-Crear una aventura corta de acción y plataformas en un planeta de cristales
-y energía. Este primer hito implementa únicamente caminar, saltar, gravedad,
-suelo y colisiones. Incluye un recorrido de 960 px con plataformas, tres huecos,
-cámara lateral y regreso al inicio al caer. Las figuras son provisionales.
-
-## Tecnologías verificadas
-Phaser 4.2.1, Vite 8.3.8 y TypeScript 7.0.2.
-TypeScript utiliza strict. El archivo package-lock.json fija la instalación.
-
-## Repositorio
+## GitHub
 https://github.com/Harold95-AL/KORA
 
-Para publicar el commit inicial, tras revisar la identidad de Git:
+Los avances se guardan en commits locales. Publicar solo con autorización:
 
-    git push -u origin HEAD
+    git push origin master
 
-No incluir secretos en el repositorio. .env.example solo debe contener
-valores de ejemplo. No se publica automáticamente desde el proyecto.
-
-Prueba del recorrido: cruzar los tres huecos, alcanzar la bandera, caer y usar R.
-No hay penalizaciones, vidas ni checkpoints en esta prueba.
+.gitignore excluye node_modules, dist, .env, claves y temporales.
+No introducir secretos en archivos versionados.
