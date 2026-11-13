@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { PROLOGUE_PANELS, PROLOGUE_PANEL_DURATION } from '../data/prologue';
 
-type Screen = 'menu' | 'prologue' | 'playing';
+type Screen = 'menu' | 'prologue' | 'playing' | 'section-end';
 
 function element<T extends HTMLElement>(selector: string): T {
   const target = document.querySelector<T>(selector);
@@ -14,6 +14,9 @@ export function setupFrontEnd(game: Phaser.Game): void {
   const menu = element<HTMLElement>('#main-menu');
   const prologue = element<HTMLElement>('#prologue');
   const hud = element<HTMLElement>('.game-hud');
+  const sectionEnd = element<HTMLElement>('#section-end');
+  const retry = element<HTMLButtonElement>('#retry-section');
+  const menuReturn = element<HTMLButtonElement>('#return-menu');
   const play = element<HTMLButtonElement>('#play-button');
   const skip = element<HTMLButtonElement>('#skip-prologue');
   const image = element<HTMLImageElement>('#prologue-image');
@@ -35,6 +38,10 @@ export function setupFrontEnd(game: Phaser.Game): void {
     menu.hidden = screen !== 'menu';
     prologue.hidden = screen !== 'prologue';
     hud.hidden = screen !== 'playing';
+    sectionEnd.hidden = screen !== 'section-end';
+    retry.disabled = false;
+    menuReturn.disabled = false;
+    if (screen === 'section-end') menuReturn.focus({ preventScroll: true });
     if (screen === 'menu') {
       play.disabled = false;
       play.focus({ preventScroll: true });
@@ -43,6 +50,17 @@ export function setupFrontEnd(game: Phaser.Game): void {
       imageTransition?.cancel();
       progressTransition?.cancel();
     }
+  });
+
+  retry.addEventListener('click', () => {
+    retry.disabled = true;
+    retry.blur();
+    game.events.emit('retry-section');
+  });
+  menuReturn.addEventListener('click', () => {
+    menuReturn.disabled = true;
+    menuReturn.blur();
+    game.events.emit('return-menu');
   });
 
   play.addEventListener('click', () => {

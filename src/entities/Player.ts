@@ -33,10 +33,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.jumpKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
-  update(time: number): void {
+  update(time: number, controlsEnabled = true): void {
     this.setAlpha(time < this.invulnerableUntil && Math.floor(time / 70) % 2 === 0 ? 0.35 : 1);
-    const left = this.cursors.left.isDown || this.leftKey.isDown;
-    const right = this.cursors.right.isDown || this.rightKey.isDown;
+    const left = controlsEnabled && (this.cursors.left.isDown || this.leftKey.isDown);
+    const right = controlsEnabled && (this.cursors.right.isDown || this.rightKey.isDown);
     if (left !== right) this.facing = right ? 1 : -1;
     this.setFlipX(this.facing < 0);
     this.setVelocityX((Number(right) - Number(left)) * PLAYER.speed);
@@ -45,7 +45,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const upPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up);
     const spacePressed = Phaser.Input.Keyboard.JustDown(this.jumpKey);
     const body = this.body as Phaser.Physics.Arcade.Body;
-    if ((upPressed || spacePressed) && body.blocked.down) {
+    if (controlsEnabled && (upPressed || spacePressed) && body.blocked.down) {
       this.setVelocityY(-PLAYER.jumpSpeed);
     }
 

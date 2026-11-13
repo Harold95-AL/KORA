@@ -13,7 +13,7 @@
       </header>
       <div class="game-frame" id="game-frame">
         <div class="game-surface" id="game-surface">
-          <div id="game" aria-label="Prototipo de plataformas KORA"></div>
+          <div id="game" aria-label="Juego KORA" tabindex="-1"></div>
           <section id="main-menu" class="main-menu" aria-labelledby="menu-title">
             <img class="menu-art" src="%BASE_URL%assets/prologue/panel-09.png" alt="" />
             <div class="menu-shade"></div>
@@ -42,8 +42,23 @@
               <div class="cinematic-footer"><span>Espacio: siguiente viñeta</span><button id="skip-prologue" type="button">Omitir prólogo →</button></div>
             </div>
           </section>
+          <p id="interaction-hint" class="interaction-hint" role="status" hidden></p>
+          <section id="dialogue-box" class="dialogue-box" role="dialog" aria-modal="true" aria-labelledby="dialogue-speaker" aria-describedby="dialogue-text" hidden>
+            <p id="dialogue-speaker" class="dialogue-speaker"></p>
+            <p id="dialogue-text" class="dialogue-text"></p>
+            <div class="dialogue-footer"><span id="dialogue-counter"></span><button id="dialogue-next" type="button">Continuar · E / Espacio</button></div>
+          </section>
+          <section id="section-end" class="section-end" aria-labelledby="section-end-title" hidden>
+            <div class="section-end-card">
+              <p class="section-eyebrow">ECOS DEL IMPACTO / 1.1 COMPLETADA</p>
+              <h2 id="section-end-title">Fuera del cráter</h2>
+              <p>La nave necesita energía. El viaje apenas comienza.</p>
+              <div class="next-section"><span>SIGUIENTE SECCIÓN</span><h3>1.2 / El primer contacto</h3><p>Hasta aquí llega esta versión. La aventura continuará en la superficie del planeta.</p></div>
+              <div class="section-end-actions"><button id="return-menu" type="button">Volver al menú</button><button id="retry-section" type="button">Repetir sección</button></div>
+            </div>
+          </section>
           <div class="game-hud" hidden>
-            <h2>KORA</h2>
+            <h2 id="level-title">KORA</h2>
             <p id="player-health" role="status">Salud: 3 / 3</p>
             <p id="course-status" role="status">Avanza hacia la derecha · R: reiniciar</p>
           </div>
@@ -51,7 +66,7 @@
         <button id="fullscreen-button" class="fullscreen-button" type="button" aria-pressed="false">Pantalla completa</button>
       </div>
       <footer>
-        <p class="controls">Mover: A / D o flechas · Saltar: espacio o ↑ · J: golpe · K: disparo · R: reiniciar</p>
+        <p class="controls" id="controls-hint">Mover: A / D o flechas · Saltar: espacio o ↑ · J: golpe · K: disparo · R: reiniciar</p>
         <p id="display-message" role="status"></p>
       </footer>
     </main>

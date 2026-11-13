@@ -49,6 +49,6 @@ export class PrologueScene extends Phaser.Scene {
     if (this.finished || !this.scene.isActive()) return;
     this.finished = true;
     this.panelTimer?.remove(false);
-    this.scene.start('GameScene');
+    this.scene.start('CrashSiteScene');
   }
 }

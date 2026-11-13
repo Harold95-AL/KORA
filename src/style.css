@@ -147,3 +147,38 @@ body[data-screen="prologue"] .game-frame { outline: none; }
   .menu-actions { gap: 4px; margin-top: 12px; }
   .menu-actions button { padding: 7px 12px; }
 }
+
+#game:focus { outline: none; }
+.interaction-hint { position: absolute; z-index: 3; left: 50%; bottom: 7%; transform: translateX(-50%); max-width: 85%; padding: 7px 12px; border: 1px solid #458e91; border-radius: 3px; color: #d5fff5; background: #081925ec; font-size: clamp(11px, 1.2vw, 16px); text-align: center; pointer-events: none; }
+.dialogue-box { position: absolute; z-index: 8; left: 5%; right: 5%; bottom: 4%; padding: clamp(12px, 2vw, 24px); background: #071523f5; border: 1px solid #69d1ce; border-left: 4px solid #80e6db; box-shadow: 0 12px 28px #02070c80; }
+.dialogue-speaker { margin: 0 0 8px; color: #80e6db; font-size: clamp(11px, 1.1vw, 14px); text-transform: uppercase; letter-spacing: .12em; }
+.dialogue-text { color: #e3eef2; font-size: clamp(14px, 1.5vw, 22px); line-height: 1.55; max-width: 65ch; }
+.dialogue-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; color: #7b9cae; font-size: 12px; }
+.dialogue-footer button, .section-end-actions button { border: 1px solid #42747f; border-radius: 3px; padding: 8px 12px; background: #13333f; color: #d6fff3; font: inherit; font-size: 13px; cursor: pointer; }
+.dialogue-footer button:hover, .section-end-actions button:hover { border-color: #80e6db; background: #204d58; }
+.dialogue-footer button:focus-visible, .section-end-actions button:focus-visible { outline: 2px solid #b7fff0; outline-offset: 3px; }
+.section-end { position: absolute; inset: 0; z-index: 9; display: grid; place-items: center; padding: 24px; background: linear-gradient(120deg, #04111cf5, #0b2836e8); }
+.section-end-card { max-width: 600px; width: 100%; }
+.section-eyebrow { color: #72d6cd; font-size: 12px; letter-spacing: .15em; }
+.section-end h2 { margin: 12px 0; color: #e1fff5; font-size: clamp(26px, 4vw, 54px); font-weight: 600; }
+.section-end-card > p:not(.section-eyebrow) { color: #b5cdd9; font-size: 16px; }
+.next-section { margin: 26px 0; padding: 18px; border-left: 2px solid #4dbab7; background: #102c3a80; }
+.next-section > span { color: #80aaa9; letter-spacing: .12em; font-size: 10px; }
+.next-section h3 { margin: 8px 0; color: #b6f7e9; font-size: 20px; }
+.next-section p { color: #9cb8c7; }
+.section-end-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+body[data-screen="section-end"] main { padding: 0; gap: 0; grid-template-rows: minmax(0, 1fr); }
+body[data-screen="section-end"] .page-header,
+body[data-screen="section-end"] main > footer { display: none; }
+@media (max-width: 650px) {
+  .dialogue-box { left: 3%; right: 3%; bottom: 3%; }
+  .dialogue-text { font-size: 13px; line-height: 1.35; }
+  .dialogue-speaker { font-size: 10px; margin-bottom: 5px; }
+  .dialogue-footer { margin-top: 8px; }
+  .dialogue-footer button { font-size: 11px; padding: 6px 8px; }
+  .section-end { padding: 18px; }
+  .section-end h2 { margin: 8px 0; }
+  .next-section { margin: 12px 0; padding: 10px; }
+  .section-end-card > p:not(.section-eyebrow) { font-size: 13px; }
+  .next-section h3 { font-size: 16px; }
+}

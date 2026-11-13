@@ -1,9 +1,9 @@
 # Menú y prólogo — primera integración
 
 ## Flujo actual
-MenuScene → PrologueScene → GameScene (recorrido de prueba).
-La sección 1.1, La nave destruida, todavía no está construida.
-El recorrido sigue siendo un entorno de pruebas y no se presenta como nivel final.
+MenuScene → PrologueScene → CrashSiteScene (sección 1.1).
+La sección 1.1, La nave destruida, ya está integrada. Ver docs/levels/1.1-crash-site.md.
+El prototipo anterior de combate se conserva por separado en GameScene.
 
 ## Menú principal
 Fondo tomado de la viñeta del impacto aportada por el usuario.
@@ -34,8 +34,8 @@ Se respeta la proporción de cada viñeta mediante bandas oscuras.
 La preferencia de movimiento reducido desactiva el fundido.
 
 Espacio pasa a la siguiente viñeta y reinicia sus seis segundos.
-Omitir prólogo entra directamente al recorrido de prueba.
-Al terminar la última viñeta se entra automáticamente al recorrido.
+Omitir prólogo entra directamente a la sección 1.1.
+Al terminar la última viñeta se entra automáticamente a la sección 1.1.
 Por ahora no hay música, voces ni efectos de sonido.
 
 ## Archivos
